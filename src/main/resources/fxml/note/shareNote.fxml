@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="study.verlif.ui.stage.note.share.ShareNoteController">
+    <top>
+        <Label fx:id="noteNameView" text="笔记本名" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="18.0"/>
+            </font>
+            <BorderPane.margin>
+                <Insets topRightBottomLeft="5"/>
+            </BorderPane.margin>
+        </Label>
+    </top>
+    <center>
+        <ListView fx:id="listView" BorderPane.alignment="CENTER"/>
+    </center>
+    <bottom>
+        <BorderPane BorderPane.alignment="CENTER">
+            <left>
+                <Label fx:id="progressDesc" BorderPane.alignment="CENTER"/>
+            </left>
+            <center>
+                <ProgressBar fx:id="progress" prefHeight="8" progress="0.0" BorderPane.alignment="CENTER"/>
+            </center>
+            <right>
+                <Button mnemonicParsing="false" text="新增" onAction="#addShare"/>
+            </right>
+            <padding>
+                <Insets topRightBottomLeft="3"/>
+            </padding>
+        </BorderPane>
+    </bottom>
+</BorderPane>

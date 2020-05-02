@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="study.verlif.ui.stage.note.edit.EditNoteController">
+    <bottom>
+        <ToolBar prefHeight="40.0" BorderPane.alignment="BOTTOM_RIGHT">
+            <Button fx:id="saveButton" onMouseClicked="#save" text="保存" />
+            <Button mnemonicParsing="false" onMouseClicked="#cancel" text="取消" />
+        </ToolBar>
+    </bottom>
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <Label text="笔记本名">
+                <VBox.margin>
+                    <Insets topRightBottomLeft="5" />
+                </VBox.margin>
+            </Label>
+            <TextField fx:id="titleView">
+                <padding>
+                    <Insets topRightBottomLeft="5" />
+                </padding>
+                <VBox.margin>
+                    <Insets topRightBottomLeft="5" />
+                </VBox.margin>
+            </TextField>
+            <Label text="笔记本描述">
+                <VBox.margin>
+                    <Insets topRightBottomLeft="2" />
+                </VBox.margin>
+            </Label>
+            <TextArea fx:id="contentView" prefHeight="260.0" prefWidth="580.0" wrapText="true">
+                <padding>
+                    <Insets topRightBottomLeft="5" />
+                </padding>
+                <VBox.margin>
+                    <Insets topRightBottomLeft="5" />
+                </VBox.margin>
+            </TextArea>
+            <padding>
+                <Insets topRightBottomLeft="5" />
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

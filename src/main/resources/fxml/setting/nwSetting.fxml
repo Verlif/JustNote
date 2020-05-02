@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="study.verlif.ui.stage.setting.network.NwSettingController">
+    <center>
+        <VBox prefHeight="367.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <VBox>
+                <Label text="服务器IP">
+                    <VBox.margin>
+                        <Insets bottom="10"/>
+                    </VBox.margin>
+                </Label>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <ChoiceBox fx:id="httpType" prefHeight="23.0" prefWidth="80.0">
+                        <HBox.margin>
+                            <Insets right="10"/>
+                        </HBox.margin>
+                    </ChoiceBox>
+                    <TextField fx:id="ip" prefHeight="23.0" prefWidth="240.0" />
+                </HBox>
+            </VBox>
+            <padding>
+                <Insets topRightBottomLeft="20" />
+            </padding>
+        </VBox>
+    </center>
+    <bottom>
+        <ToolBar BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onMouseClicked="#save" text="保存" />
+            <Button mnemonicParsing="false" onMouseClicked="#close" text="关闭" />
+        </ToolBar>
+    </bottom>
+</BorderPane>

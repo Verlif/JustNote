@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<VBox fx:id="vBox" minHeight="30.0" minWidth="20.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="study.verlif.ui.stage.common.FloatController"
+      style="-fx-border-color: gray;-fx-border-width: 1px">
+    <padding>
+        <Insets topRightBottomLeft="2"/>
+    </padding>
+</VBox>

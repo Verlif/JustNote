@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="study.verlif.ui.stage.main.MainController">
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <MenuBar>
+                <Menu fx:id="menuAccount" onShowing="#checkOnline" text="账户">
+                    <MenuItem fx:id="menuLogin_account" onAction="#account" text="账户信息" visible="false"/>
+                    <MenuItem fx:id="menuLogin_login" onAction="#login" text="登陆"/>
+                </Menu>
+                <Menu mnemonicParsing="false" text="新建">
+                    <MenuItem mnemonicParsing="false" onAction="#addNote" text="新建笔记本"/>
+                    <MenuItem mnemonicParsing="false" onAction="#addRecord" text="新建记录"/>
+                </Menu>
+                <Menu mnemonicParsing="false" text="功能">
+                    <MenuItem mnemonicParsing="false" onAction="#sync" text="同步"/>
+                </Menu>
+                <Menu mnemonicParsing="false" text="设置">
+                    <MenuItem mnemonicParsing="false" onAction="#swSetting" text="软件设置"/>
+                    <MenuItem mnemonicParsing="false" onAction="#nwSetting" text="网络设置"/>
+                </Menu>
+                <Menu mnemonicParsing="false" text="帮助">
+                    <MenuItem mnemonicParsing="false" text="检查更新"/>
+                    <MenuItem mnemonicParsing="false" onAction="#about" text="关于"/>
+                </Menu>
+            </MenuBar>
+            <BorderPane>
+                <center>
+                    <TextField fx:id="searchArea" promptText="搜索">
+                        <BorderPane.margin>
+                            <Insets topRightBottomLeft="5"/>
+                        </BorderPane.margin>
+                    </TextField>
+                </center>
+                <right>
+                    <Button onAction="#search" text="搜索" BorderPane.alignment="CENTER">
+                        <BorderPane.margin>
+                            <Insets topRightBottomLeft="5"/>
+                        </BorderPane.margin>
+                    </Button>
+                </right>
+            </BorderPane>
+        </VBox>
+    </top>
+    <center>
+        <SplitPane dividerPositions="0.2" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+                <center>
+                    <VBox BorderPane.alignment="CENTER">
+                        <TitledPane text="个人笔记本">
+                            <ListView fx:id="selfNoteListView"/>
+                        </TitledPane>
+                        <TitledPane expanded="false" text="其他笔记本">
+                            <ListView fx:id="otherNoteListView"/>
+                        </TitledPane>
+                        <TitledPane expanded="false" text="共享笔记本">
+                            <ListView fx:id="publicNoteListView"/>
+                        </TitledPane>
+                    </VBox>
+                </center>
+            </BorderPane>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+                <center>
+                    <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                            <HBox>
+                                <Label alignment="CENTER" text="记录标题">
+                                    <HBox.margin>
+                                        <Insets right="10"/>
+                                    </HBox.margin>
+                                </Label>
+                                <Label fx:id="recordTitleView" alignment="CENTER"/>
+                                <VBox.margin>
+                                    <Insets topRightBottomLeft="5"/>
+                                </VBox.margin>
+                            </HBox>
+                            <HBox>
+                                <HBox>
+                                    <Label alignment="CENTER" text="创建时间">
+                                        <HBox.margin>
+                                            <Insets right="10"/>
+                                        </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="recordCreateTimeView" alignment="CENTER"/>
+                                    <HBox.margin>
+                                        <Insets right="20"/>
+                                    </HBox.margin>
+                                </HBox>
+                                <HBox>
+                                    <Label alignment="CENTER" text="最后更新时间">
+                                        <HBox.margin>
+                                            <Insets right="10"/>
+                                        </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="recordUpdateTimeView" alignment="CENTER"/>
+                                </HBox>
+                                <VBox.margin>
+                                    <Insets topRightBottomLeft="5"/>
+                                </VBox.margin>
+                            </HBox>
+                        </VBox>
+                        <TextArea fx:id="recordContentView" editable="false" prefHeight="1000.0"/>
+                    </VBox>
+                </center>
+                <top>
+                    <TitledPane fx:id="recordListTitle" alignment="TOP_LEFT" text="记录列表">
+                        <SplitPane>
+                            <ListView fx:id="recordListView" prefHeight="160.0"/>
+                        </SplitPane>
+                    </TitledPane>
+                </top>
+            </BorderPane>
+        </SplitPane>
+    </center>
+</BorderPane>

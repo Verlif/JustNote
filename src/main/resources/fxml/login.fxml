@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root" prefHeight="200.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="study.verlif.ui.stage.login.LoginController">
+    <VBox prefHeight="50.0" prefWidth="200.0">
+        <Label text="用户名">
+            <VBox.margin>
+                <Insets bottom="10"/>
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="userNameView"/>
+    </VBox>
+    <VBox prefHeight="50.0" prefWidth="200.0">
+        <Label text="密码">
+            <VBox.margin>
+                <Insets bottom="10"/>
+            </VBox.margin>
+        </Label>
+        <PasswordField fx:id="userKeyView">
+            <cursor>
+                <Cursor fx:constant="DEFAULT"/>
+            </cursor>
+        </PasswordField>
+        <VBox.margin>
+            <Insets top="20"/>
+        </VBox.margin>
+    </VBox>
+    <HBox alignment="BASELINE_CENTER" prefHeight="100.0" prefWidth="200.0">
+        <Button fx:id="buttonLogin" mnemonicParsing="false" onMouseClicked="#login" text="登陆"/>
+        <Button fx:id="buttonRegister" mnemonicParsing="false" onMouseClicked="#register" text="注册">
+            <HBox.margin>
+                <Insets left="100"/>
+            </HBox.margin>
+        </Button>
+        <VBox.margin>
+            <Insets top="20"/>
+        </VBox.margin>
+    </HBox>
+    <padding>
+        <Insets bottom="20" left="40" right="40" top="20"/>
+    </padding>
+</VBox>

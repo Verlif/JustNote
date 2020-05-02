@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="study.verlif.ui.stage.share.EditShareController">
+    <top>
+        <Label fx:id="noteName" text="笔记本名" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="18.0" />
+            </font>
+            <BorderPane.margin>
+                <Insets topRightBottomLeft="5" />
+            </BorderPane.margin>
+        </Label>
+    </top>
+    <bottom>
+        <ToolBar BorderPane.alignment="CENTER">
+            <Button fx:id="saveButton" text="保存" onAction="#save"/>
+            <Button mnemonicParsing="false" text="取消" onAction="#cancel"/>
+        </ToolBar>
+    </bottom>
+    <center>
+        <BorderPane BorderPane.alignment="CENTER">
+            <top>
+                <HBox BorderPane.alignment="CENTER">
+                    <Label alignment="CENTER" prefHeight="30" text="共享类型">
+                        <HBox.margin>
+                            <Insets topRightBottomLeft="5" />
+                        </HBox.margin>
+                    </Label>
+                    <ChoiceBox fx:id="shareType" prefHeight="30">
+                        <HBox.margin>
+                            <Insets topRightBottomLeft="5" />
+                        </HBox.margin>
+                        <padding>
+                            <Insets topRightBottomLeft="3" />
+                        </padding>
+                    </ChoiceBox>
+                </HBox>
+            </top>
+            <center>
+                <ListView fx:id="usersBox" />
+            </center>
+            <BorderPane.margin>
+                <Insets topRightBottomLeft="5" />
+            </BorderPane.margin>
+         <bottom>
+             <HBox BorderPane.alignment="CENTER">
+                 <TextField fx:id="userAddArea" prefWidth="200"/>
+                 <Button text="新增" onAction="#newUser">
+                     <HBox.margin>
+                         <Insets left="5"/>
+                     </HBox.margin>
+                 </Button>
+                 <BorderPane.margin>
+                     <Insets top="5" bottom="5"/>
+                 </BorderPane.margin>
+             </HBox>
+         </bottom>
+        </BorderPane>
+    </center>
+</BorderPane>
