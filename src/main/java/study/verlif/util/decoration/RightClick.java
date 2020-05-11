@@ -8,14 +8,21 @@ import java.util.ArrayList;
 
 public class RightClick {
 
-    public static ArrayList<FloatAction> getNoteRC(Note note) {
+    public static ArrayList<FloatAction> getDefaultNoteRC(Note note) {
         ArrayList<FloatAction> list = new ArrayList<>();
         list.add(new NoteNameAction(note.getNoteTitle()));
+        list.add(new NoteShowAction(note));
         list.add(new NoteEditAction(note));
         list.add(new RecordAddAction(note));
-        list.add(new NoteShowAction(note));
         list.add(new NoteShareAction(note));
         list.add(new NoteDeleteAction(note));
+        return list;
+    }
+
+    public static ArrayList<FloatAction> getSharedNoteRC(Note note) {
+        ArrayList<FloatAction> list = new ArrayList<>();
+        list.add(new NoteNameAction(note.getNoteTitle()));
+        list.add(new NoteShowAction(note));
         return list;
     }
 

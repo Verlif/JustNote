@@ -14,6 +14,8 @@ public interface OnlineNoteDBC {
      */
     Note getNoteById(int onlineId);
 
+    ArrayList<Note> getSharedNotes();
+
     /**
      * 获取用户的所有笔记本
      * @param userId    用户id

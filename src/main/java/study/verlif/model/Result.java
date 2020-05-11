@@ -73,9 +73,6 @@ public class Result implements Serializable {
             int size = array.size();
             for (int i = 0; i < size; i++) {
                 JSONObject o = array.getJSONObject(i);
-
-                ConsoleUtil.println(o);
-
                 list.add(o.toJavaObject(cl));
             }
             return list;

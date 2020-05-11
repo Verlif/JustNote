@@ -7,8 +7,8 @@
 <BorderPane prefHeight="300.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="study.verlif.ui.stage.record.show.ShowRecordController">
     <bottom>
         <ToolBar prefHeight="40.0" BorderPane.alignment="BOTTOM_RIGHT">
-            <Button mnemonicParsing="false" onMouseClicked="#edit" text="编辑" />
-            <Button mnemonicParsing="false" onMouseClicked="#close" text="关闭" />
+            <Button fx:id="editButton" onMouseClicked="#edit" text="编辑" disable="true" />
+            <Button onMouseClicked="#close" text="关闭" />
         </ToolBar>
     </bottom>
     <center>

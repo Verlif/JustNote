@@ -1,14 +1,15 @@
 package study.verlif.ui.stage.note.show;
 
 import javafx.application.Platform;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import study.verlif.manager.StageManager;
 import study.verlif.manager.UserManager;
 import study.verlif.model.Note;
 import study.verlif.model.User;
+import study.verlif.ui.alert.SimpleMsgAlert;
 import study.verlif.ui.stage.account.show.AccountShowStage;
 import study.verlif.ui.stage.base.BaseController;
-import study.verlif.ui.alert.SimpleMsgAlert;
 import study.verlif.ui.stage.note.edit.EditNoteStage;
 import study.verlif.util.TimeFormatUtil;
 
@@ -19,6 +20,7 @@ public class ShowNoteController extends BaseController {
     public Label updateTimeView;
     public Label ownerView;
     public Label creatorView;
+    public Button editButton;
 
     private Note note;
     private final UserManager userManager;
@@ -61,6 +63,9 @@ public class ShowNoteController extends BaseController {
             User creator = userManager.getUserById(note.getCreatorId());
             if (creator != null) {
                 Platform.runLater(() -> creatorView.setText(creator.getUserName()));
+            }
+            if (note.getOwnerId() == userManager.getLocalUser().getUserId()) {
+                editButton.setDisable(false);
             }
         }
     }

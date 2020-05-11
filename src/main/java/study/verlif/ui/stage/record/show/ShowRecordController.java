@@ -1,5 +1,6 @@
 package study.verlif.ui.stage.record.show;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import study.verlif.manager.NoteManger;
 import study.verlif.manager.StageManager;
@@ -19,6 +20,7 @@ public class ShowRecordController extends BaseController {
     public Label updateTimeView;
     public Label ownerView;
     public Label belongNote;
+    public Button editButton;
 
     private Note.Record record;
     private final UserManager userManager;
@@ -54,6 +56,9 @@ public class ShowRecordController extends BaseController {
         if (note != null) {
             belongNote.setText(note.getNoteTitle());
         } else belongNote.setText("流浪的笔记，没有归属");
+        if (record.getCreatorId() == userManager.getLocalUser().getUserId()) {
+            editButton.setDisable(false);
+        }
     }
 
     public void edit() {

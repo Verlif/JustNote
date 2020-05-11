@@ -142,7 +142,7 @@ public class SyncAction extends Action {
          *  添加未添加的记录。
          */
         for (Note n : localNotes) {
-            ArrayList<Note.Record> LocalRecords = noteManger.getNoteRecords(n.getNoteId());
+            ArrayList<Note.Record> LocalRecords = noteManger.getLocalNoteRecords(n.getNoteId());
             for (Note.Record r : LocalRecords) {
                 int i = 0;
                 for (; i < records.size(); i++) {

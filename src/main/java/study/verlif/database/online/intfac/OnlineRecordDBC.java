@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface OnlineRecordDBC {
     Note.Record getRecordById(int onlineId);
-    ArrayList<Note.Record> getNoteRecords(int noteId);
+    ArrayList<Note.Record> getNoteRecords(int noteIdOL);
     boolean saveOrModifyRecord(Note.Record record);
     boolean deleteRecord(int onlineId);
 }

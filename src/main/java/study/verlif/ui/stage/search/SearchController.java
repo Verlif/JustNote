@@ -19,7 +19,6 @@ import study.verlif.ui.stage.base.BaseController;
 import study.verlif.ui.stage.record.edit.EditRecordStage;
 import study.verlif.ui.stage.record.show.ShowRecordStage;
 import study.verlif.ui.waiting.WaitStage;
-import study.verlif.util.ConsoleUtil;
 import study.verlif.util.decoration.floataction.RecordDeleteAction;
 
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ public class SearchController extends BaseController {
             titledPane.setText(n.getNoteTitle());
 
             ListView<Note.Record> recordListView = new ListView<>();
-            ArrayList<Note.Record> records = noteManger.getNoteRecords(n.getNoteId());
+            ArrayList<Note.Record> records = noteManger.getLocalNoteRecords(n.getNoteId());
             recordListView.getItems().addAll(records);
             setListViewListener(recordListView);
             titledPane.setExpanded(false);

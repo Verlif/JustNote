@@ -1,7 +1,5 @@
 package study.verlif.ui.stage.record.edit;
 
-import javafx.application.Platform;
-import study.verlif.manager.NoteManger;
 import study.verlif.model.Note;
 import study.verlif.ui.stage.base.BaseStage;
 
@@ -21,23 +19,10 @@ public class EditRecordStage extends BaseStage {
     @Override
     public void setAttr() {
         setTitle("编辑记录");
-        new Thread(() -> {
+        if (record != null) {
             EditRecordController controller = getController();
-            if (record != null) {
-                Note.Record temp;
-                if (record.getRecordId() != 0) {
-                    temp = NoteManger.newInstance().getRecordById(record.getRecordId());
-                    if (temp != null) {
-                        Platform.runLater(() -> controller.setRecord(temp));
-                    }
-                } else if (record.getRecordIdOL() != 0) {
-                    temp = NoteManger.newInstance().getRecordById(record.getRecordIdOL());
-                    if (temp != null) {
-                        Platform.runLater(() -> controller.setRecord(temp));
-                    }
-                } else Platform.runLater(() -> controller.setRecord(record));
-            }
-        }).start();
+            controller.setRecord(record);
+        }
     }
     
     @Override

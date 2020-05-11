@@ -29,7 +29,6 @@ import study.verlif.ui.stage.setting.network.NwSettingStage;
 import study.verlif.ui.stage.setting.software.SwSettingStage;
 import study.verlif.util.TextUtil;
 import study.verlif.util.TimeFormatUtil;
-import study.verlif.util.decoration.ListViewHover;
 import study.verlif.util.decoration.RightClick;
 
 import java.util.ArrayList;
@@ -76,17 +75,20 @@ public class MainController extends BaseController {
                             // 刷新主窗口标题
                             MainStage stage = getStage();
                             stage.refreshTitle();
+                            // 重新加载主界面
                             init();
                         });
+                        break;
                     }
                     case Message.What.WHAT_NOTE_UPDATE: {
+                        // 刷新笔记本列表
                         loadLocalNotes();
                         break;
                     }
                     case Message.What.WHAT_RECORD_UPDATE: {
-                        setRecordList(null);
-                        // 清空
-                        Platform.runLater(() -> setRecordInfo(new Note.Record()));
+                        Platform.runLater(() -> {
+                            setRecordList(null);
+                        });
                         break;
                     }
                 }
@@ -96,7 +98,6 @@ public class MainController extends BaseController {
     }
 
     public void init() {
-        recordListTitle.setAnimated(true);
         setNoteList();
         setUserName();
 
@@ -107,22 +108,18 @@ public class MainController extends BaseController {
             }
         });
 
-        ListViewHover.OnDragDoneCallBack oddcb = note -> {
-            if (selectedRecord != null && note != null) {
-                // 过滤相同笔记本
-                if (selectedRecord.getNoteId() != note.getNoteId()) {
-                    selectedRecord.setNoteId(note.getNoteId());
-                    if (noteManger.createOrUpdateRecord(selectedRecord)) {
-                        setRecordList(selectedNote);
-                    } else new SimpleMsgAlert("无法移动记录！", getStage()).show();
-                }
-            }
-        };
-
-        ListViewHover.setNoteHover(selfNoteListView, oddcb);
-        ListViewHover.setNoteHover(publicNoteListView, null);
-        ListViewHover.setNoteHover(otherNoteListView, null);
-        ListViewHover.setRecordHover(recordListView);
+        // 创建拖拽响应
+//        ListViewHover.OnDragDoneCallBack oddcb = note -> {
+//            if (selectedRecord != null && note != null) {
+//                // 过滤相同笔记本
+//                if (selectedRecord.getNoteId() != note.getNoteId()) {
+//                    selectedRecord.setNoteId(note.getNoteId());
+//                    if (noteManger.createOrUpdateRecord(selectedRecord)) {
+//                        setRecordList(selectedNote);
+//                    } else new SimpleMsgAlert("无法移动记录！", getStage()).show();
+//                }
+//            }
+//        };
     }
 
     public void login() {
@@ -161,65 +158,73 @@ public class MainController extends BaseController {
             for (Note note : notes) {
                 if (note.getOwnerId() == userManager.getLocalUser().getUserId()) {
                     selfNotes.add(note);
-                } else if (note.getOwnerId() == 0 ) {
+                } else if (note.getOwnerId() == 0) {
                     otherNotes.add(note);
                 }
             }
-            setPersonalNotes(selfNotes);
-            setOtherNotes(otherNotes);
-
-            setNoteListListener(selfNoteListView);
-            setNoteListListener(otherNoteListView);
+            Platform.runLater(() -> {
+                setPersonalNotes(selfNotes);
+                setOtherNotes(otherNotes);
+            });
         }).start();
     }
 
     /**
      * 设置个人笔记本列表
+     *
      * @param notes 设置的笔记本实例列表
      */
     private void setPersonalNotes(List<Note> notes) {
-        Platform.runLater(() -> {
-            selfNoteListView.getItems().clear();
-            selfNoteListView.getItems().addAll(notes);
-        });
+        selfNoteListView.getItems().clear();
+        selfNoteListView.getItems().addAll(notes);
+        setNoteListListener(selfNoteListView);
     }
 
     /**
      * 设置其他笔记本列表
+     *
      * @param notes 设置的笔记本实例列表
      */
     private void setOtherNotes(List<Note> notes) {
-        Platform.runLater(() -> {
-            otherNoteListView.getItems().clear();
-            otherNoteListView.getItems().addAll(notes);
-        });
+        otherNoteListView.getItems().clear();
+        otherNoteListView.getItems().addAll(notes);
+        setNoteListListener(otherNoteListView);
     }
 
     /**
      * 设置笔记本列表鼠标事件
-     * @param listView  需要监听的视图
+     *
+     * @param listView 需要监听的视图
      */
     private void setNoteListListener(ListView<Note> listView) {
         // 开启笔记本列表点击事件
         listView.setOnMouseClicked(event -> {
             isPrimaryButton = event.getButton() != MouseButton.SECONDARY;
+            selectedNote = listView.getFocusModel().getFocusedItem();
             if (selectedNote != null) {
                 selectNote(selectedNote);
                 // 开启选择浮动窗口
                 if (!isPrimaryButton) {
-                    ArrayList<FloatAction> list = RightClick.getNoteRC(selectedNote);
+                    ArrayList<FloatAction> list;
+                    if (selectedNote.getOwnerId() != userManager.getLocalUser().getUserId()) {
+                        list = RightClick.getSharedNoteRC(selectedNote);
+                    } else list = RightClick.getDefaultNoteRC(selectedNote);
                     FloatStage stage = stageManager.getStage(new FloatStage(list));
                     stage.show();
                 }
             }
         });
         // 设置笔记本列表单项选择
-        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectedNote = newValue);
+        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            selectedNote = newValue;
+        });
     }
+
 
     /**
      * 选择笔记本
-     * @param note  选择的笔记本实例
+     *
+     * @param note 选择的笔记本实例
      */
     private void selectNote(Note note) {
         if (note != null) {
@@ -239,7 +244,14 @@ public class MainController extends BaseController {
      * 加载与当前用户相关的共享笔记本，需要联网并登陆
      */
     private void loadPublicNotes() {
-
+        new Thread(() -> {
+            ArrayList<Note> notes = noteManger.getSharedNotes();
+            setNoteListListener(publicNoteListView);
+            Platform.runLater(() -> {
+                publicNoteListView.getItems().clear();
+                publicNoteListView.getItems().addAll(notes);
+            });
+        }).start();
     }
 
     /**
@@ -249,19 +261,21 @@ public class MainController extends BaseController {
      */
     private void setRecordList(Note note) {
         setRecordInfo(null);
+        // 先将列表缓存清除
+        recordListView.getItems().clear();
         if (note == null) {
             // 先将列表缓存清除
-            Platform.runLater(() -> {
-                recordListTitle.setText("记录列表");
-                recordListView.getItems().clear();
-            });
+            recordListTitle.setText("记录列表");
             return;
         }
         new Thread(() -> {
-            ArrayList<Note.Record> records = noteManger.getNoteRecords(note.getNoteId());
+            ArrayList<Note.Record> records;
+            if (note.getOwnerId() == 0 || note.getOwnerId() == userManager.getLocalUser().getUserId()) {
+                records = noteManger.getLocalNoteRecords(note.getNoteId());
+            } else {
+                records = noteManger.getOnlineNoteRecords(note.getNoteIdOL());
+            }
             Platform.runLater(() -> {
-                // 先将列表缓存清除
-                recordListView.getItems().clear();
                 // 载入当前记录列表
                 recordListView.getItems().addAll(records);
                 // 点击记录列表项时，设置记录信息到界面

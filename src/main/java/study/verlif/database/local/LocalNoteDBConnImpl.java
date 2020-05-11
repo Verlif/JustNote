@@ -85,7 +85,7 @@ public class LocalNoteDBConnImpl implements LocalNoteDBConnector {
         if (note != null) {
             note.setNoteId(nowId);
             if (notesFileManager.renameNote(getFileName(oldId), getFileName(nowId))) {
-                ArrayList<Note.Record> records = NoteManger.newInstance().getNoteRecords(oldId);
+                ArrayList<Note.Record> records = NoteManger.newInstance().getLocalNoteRecords(oldId);
                 for (Note.Record r : records) {
                     r.setNoteId(nowId);
                 }

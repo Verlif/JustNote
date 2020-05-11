@@ -17,11 +17,19 @@ public class OnlineNoteDBCImpl implements OnlineNoteDBC {
     }
 
     @Override
-    public Note getNoteById(int onlineId) {
-        Result result = csMsgManager.doGetNoteById(onlineId);
+    public Note getNoteById(int noteIdOL) {
+        Result result = csMsgManager.doGetNoteById(noteIdOL);
         if (result.ok()) {
             return result.getDataObject(Note.class);
         } else return null;
+    }
+
+    @Override
+    public ArrayList<Note> getSharedNotes() {
+        Result result = csMsgManager.doGetSharedNote();
+        if (result.ok()) {
+            return result.getDataList("notes", Note.class);
+        } else return new ArrayList<>();
     }
 
     @Override
@@ -51,16 +59,9 @@ public class OnlineNoteDBCImpl implements OnlineNoteDBC {
     }
 
     @Override
-    public boolean deleteNoteById(int onlineId) {
-        Result result = csMsgManager.doDeleteNote(onlineId);
+    public boolean deleteNoteById(int noteId) {
+        Result result = csMsgManager.doDeleteNote(noteId);
         return result.ok();
     }
 
-    private void waitASec() {
-        try {
-            Thread.sleep((long) (Math.random() * 500));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

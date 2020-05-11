@@ -1,6 +1,7 @@
 package study.verlif.manager;
 
 import study.verlif.model.Note;
+import study.verlif.util.ConsoleUtil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -106,7 +107,8 @@ public class NotesFileManager {
 
     /**
      * 删除Note文件
-     * @param fileName  相关Note文件名
+     *
+     * @param fileName 相关Note文件名
      */
     public void deleteNoteFile(String fileName) {
         File file = new File(getNotesDir() + File.separator + fileName);
@@ -182,7 +184,9 @@ public class NotesFileManager {
         try {
             if (files != null) {
                 for (File f : files) {
-                    records.add((Note.Record) new ObjectInputStream(new FileInputStream(f)).readObject());
+                    FileInputStream fis = new FileInputStream(f);
+                    records.add((Note.Record) new ObjectInputStream(fis).readObject());
+                    fis.close();
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -193,8 +197,9 @@ public class NotesFileManager {
 
     /**
      * 获取目标笔记本下的所有记录
-     * @param noteId    目标笔记本的id
-     * @return  记录集合
+     *
+     * @param noteId 目标笔记本的id
+     * @return 记录集合
      */
     public ArrayList<Note.Record> getNoteRecords(int noteId) {
         ArrayList<Note.Record> records = getAllRecords();
@@ -209,12 +214,13 @@ public class NotesFileManager {
 
     /**
      * 删除Record文件
-     * @param fileName  相关Record文件名
+     *
+     * @param fileName 相关Record文件名
      */
     public void deleteRecordFile(String fileName) {
         File file = new File(getRecordsDir() + File.separator + fileName);
         if (file.exists()) {
-            file.delete();
+            System.out.println(file.delete());
         }
     }
 

@@ -1,6 +1,6 @@
 package study.verlif.manager;
 
-import com.alibaba.fastjson.JSON;
+import com.sun.org.apache.regexp.internal.RE;
 import study.verlif.database.online.OnlineNoteDBCImpl;
 import study.verlif.database.online.OnlineRecordDBCImpl;
 import study.verlif.database.online.intfac.OnlineNoteDBC;
@@ -10,10 +10,8 @@ import study.verlif.database.local.intfac.LocalNoteDBConnector;
 import study.verlif.database.local.intfac.LocalRecordDBConnector;
 import study.verlif.database.online.intfac.OnlineRecordDBC;
 import study.verlif.model.Note;
-import study.verlif.util.ConsoleUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class NoteManger {
 
@@ -55,6 +53,10 @@ public class NoteManger {
 
     public Note getLocalNoteById(int noteId) {
         return lndbc.getNoteById(noteId);
+    }
+
+    public ArrayList<Note> getSharedNotes() {
+        return ondbc.getSharedNotes();
     }
 
     public Note buildANewNote() {
@@ -99,7 +101,7 @@ public class NoteManger {
         ArrayList<Note> notes = getSelfNoteList();
         ArrayList<Note.Record> result = new ArrayList<>();
         for (Note n : notes) {
-            ArrayList<Note.Record> records = getNoteRecords(n.getNoteId());
+            ArrayList<Note.Record> records = getLocalNoteRecords(n.getNoteId());
             for (Note.Record r : records) {
                 if (r.getRecordTitle().contains(key)
                         || (r.getRecordContent() != null && r.getRecordContent().contains(key))) {
@@ -120,9 +122,15 @@ public class NoteManger {
             lndbc.buildId(note);
         }
         if (userManager.isCheckOnline()) {
-            ondbc.saveOrModifyNote(note);
+            if (!ondbc.saveOrModifyNote(note)) {
+                return false;
+            }
         }
         return lndbc.saveOrModifyNote(note);
+    }
+
+    public boolean updateSharedRecord(Note.Record record) {
+        return ordbc.saveOrModifyRecord(record);
     }
 
     public boolean updateLocalNote(Note note) {
@@ -139,11 +147,11 @@ public class NoteManger {
 
     /**
      * 删除线上的笔记本数据
-     * @param onlineId  目标笔记本的onlineId
+     * @param noteId  目标笔记本的onlineId
      * @return  是否删除成功。
      */
-    public boolean deleteOnlineNote(int onlineId) {
-        return ondbc.deleteNoteById(onlineId);
+    public boolean deleteOnlineNote(int noteId) {
+        return ondbc.deleteNoteById(noteId);
     }
 
     public boolean renameNote(Note note, int newId) {
@@ -168,15 +176,25 @@ public class NoteManger {
         return lrdbc.getRecordById(recordId);
     }
 
+    public Note.Record getOnlineRecordById(int recordIdOL) {
+        return ordbc.getRecordById(recordIdOL);
+    }
+
     /**
      * 获取笔记本下的所有记录，包括本地与线上。
      * @param noteId    笔记本id
      * @return  记录集合。
      */
-    public ArrayList<Note.Record> getNoteRecords(int noteId) {
+    public ArrayList<Note.Record> getLocalNoteRecords(int noteId) {
         Note.Record record = new Note.Record();
         record.setNoteId(noteId);
         return lrdbc.getRecordList(record);
+    }
+
+    public ArrayList<Note.Record> getOnlineNoteRecords(int noteIdOL) {
+        Note.Record record = new Note.Record();
+        record.setNoteId(noteIdOL);
+        return ordbc.getNoteRecords(noteIdOL);
     }
 
     public boolean createOrUpdateRecord(Note.Record record) {
@@ -184,9 +202,14 @@ public class NoteManger {
             lrdbc.buildId(record);
         }
         if (userManager.isCheckOnline()) {
-            ordbc.saveOrModifyRecord(record);
+            if (!ordbc.saveOrModifyRecord(record)) {
+                return false;
+            }
         }
-        return lrdbc.saveOrModifyRecord(record);
+        // 当记录是当前用户维护时可存于本地
+        if (record.getCreatorId() == userManager.getLocalUser().getUserId()) {
+            return lrdbc.saveOrModifyRecord(record);
+        } else return true;
     }
 
     public boolean updateLocalRecord(Note.Record record) {
@@ -197,8 +220,8 @@ public class NoteManger {
         lrdbc.delRecord(recordId);
     }
 
-    public boolean deleteOnlineRecord(int onlineId) {
-        return ordbc.deleteRecord(onlineId);
+    public boolean deleteOnlineRecord(int recordId) {
+        return ordbc.deleteRecord(recordId);
     }
 
     public boolean renameRecord(Note.Record record, int nowId) {

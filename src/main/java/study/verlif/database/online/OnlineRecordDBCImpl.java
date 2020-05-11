@@ -10,23 +10,23 @@ import java.util.Date;
 
 public class OnlineRecordDBCImpl implements OnlineRecordDBC {
 
-    private CSMsgManager csMsgManager;
+    private final CSMsgManager csMsgManager;
 
     public OnlineRecordDBCImpl() {
         csMsgManager = CSMsgManager.newInstance();
     }
 
     @Override
-    public Note.Record getRecordById(int onlineId) {
-        Result result = csMsgManager.doGetRecordById(onlineId);
+    public Note.Record getRecordById(int recordIdOL) {
+        Result result = csMsgManager.doGetRecordById(recordIdOL);
         if (result.ok()) {
             return result.getDataObject(Note.Record.class);
         } else return null;
     }
 
     @Override
-    public ArrayList<Note.Record> getNoteRecords(int noteId) {
-        Result result = csMsgManager.doGetNoteRecords(noteId);
+    public ArrayList<Note.Record> getNoteRecords(int noteIdOL) {
+        Result result = csMsgManager.doGetNoteRecords(noteIdOL);
         if (result.ok()) {
             return result.getDataList("records", Note.Record.class);
         } else return new ArrayList<>();
@@ -48,8 +48,8 @@ public class OnlineRecordDBCImpl implements OnlineRecordDBC {
     }
 
     @Override
-    public boolean deleteRecord(int onlineId) {
-        Result result = csMsgManager.doDeleteRecord(onlineId);
+    public boolean deleteRecord(int recordId) {
+        Result result = csMsgManager.doDeleteRecord(recordId);
         return result.ok();
     }
 

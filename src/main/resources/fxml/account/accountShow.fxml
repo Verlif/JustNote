@@ -15,6 +15,14 @@
     </top>
    <center>
        <VBox BorderPane.alignment="CENTER">
+           <Label fx:id="idView" wrapText="true">
+               <padding>
+                   <Insets topRightBottomLeft="5" />
+               </padding>
+               <graphic>
+                   <Label text="id -" />
+               </graphic>
+           </Label>
            <Label fx:id="contentView" wrapText="true">
                <padding>
                    <Insets topRightBottomLeft="5" />

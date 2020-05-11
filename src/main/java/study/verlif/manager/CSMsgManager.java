@@ -106,6 +106,11 @@ public class CSMsgManager {
         return getResult(s);
     }
 
+    public Result doGetSharedNote() {
+        String s = doPost("note/get/shared");
+        return getResult(s);
+    }
+
     public Result doSaveNote(Note note) {
         String s = doPost("note/save", note);
         return getResult(s);
@@ -117,7 +122,7 @@ public class CSMsgManager {
     }
 
     public Result doDeleteNote(int noteId) {
-        String s = doPost("note/delete", noteId);
+        String s = doPost("note/delete/id", noteId);
         return getResult(s);
     }
 
@@ -146,7 +151,7 @@ public class CSMsgManager {
     }
 
     public Result doDeleteRecord(int recordId) {
-        String s = doPost("record/delete", recordId);
+        String s = doPost("record/delete/id", recordId);
         return getResult(s);
     }
 
@@ -178,10 +183,6 @@ public class CSMsgManager {
                 result.setCode(json.getIntValue("code"));
                 result.setMsg(json.getString("msg"));
                 result.setData(json.getString("data"));
-
-                if (!result.ok()) {
-                    ConsoleUtil.println(result.getMsg());
-                }
             } else {
                 result.setCode(Result.CODE_BAD_NW);
                 result.setMsg("网络错误");

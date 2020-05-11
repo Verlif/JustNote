@@ -1,7 +1,5 @@
 package study.verlif.ui.stage.record.edit;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 import org.apache.http.util.TextUtils;
 import study.verlif.manager.LocalNotesManager;
@@ -12,7 +10,6 @@ import study.verlif.manager.inner.Message;
 import study.verlif.model.Note;
 import study.verlif.ui.alert.SimpleMsgAlert;
 import study.verlif.ui.stage.base.BaseController;
-import study.verlif.util.ConsoleUtil;
 
 public class EditRecordController extends BaseController {
 
@@ -27,7 +24,7 @@ public class EditRecordController extends BaseController {
     private final UserManager userManager;
     private final StageManager stageManager;
 
-    private Note note;
+    private Note selectedNote;
     private Note.Record record;
 
     public EditRecordController() {
@@ -46,7 +43,7 @@ public class EditRecordController extends BaseController {
         noteList.getItems().addAll(localNotesManager.getNoteList());
         // 当前记录保存的笔记本指向选择的笔记本
         noteList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            this.note = newValue;
+            this.selectedNote = newValue;
             noteListTitle.setText(newValue.getNoteTitle());
         });
         saveButton.setDisable(true);
@@ -70,6 +67,13 @@ public class EditRecordController extends BaseController {
 
     public void setRecord(Note.Record record) {
         this.record = record;
+        // 是否是共享笔记判定
+        if (record.getCreatorId() != userManager.getLocalUser().getUserId()) {
+            selectedNote = new Note();
+            selectedNote.setNoteId(record.getNoteId());
+            noteListTitle.setText("共享笔记编辑");
+            noteListTitle.setDisable(true);
+        }
         fillContent(record);
     }
 
@@ -92,20 +96,22 @@ public class EditRecordController extends BaseController {
             return null;
         }
         // 判定选择的笔记本
-        if (note == null) {
+        if (selectedNote == null) {
             new SimpleMsgAlert("请选择一个笔记本用于存放本记录", getStage()).show();
             return null;
-        } else if (note.getNoteId() == 0) {
+        } else if (selectedNote.getNoteId() == 0) {
             // 新建笔记本
-            noteManger.createOrUpdateNote(note);
+            noteManger.createOrUpdateNote(selectedNote);
             notifyUI();
         }
         if (record == null) {
             record = new Note.Record();
             record.setCreatorId(userManager.getLocalUser().getUserId());
         }
-        record.setNoteId(note.getNoteId());
-        record.setCreatorId(userManager.getLocalUser().getUserId());
+        record.setNoteId(selectedNote.getNoteId());
+        if (record.getCreatorId() == 0) {
+            record.setCreatorId(userManager.getLocalUser().getUserId());
+        }
         record.setRecordTitle(titleView.getText());
         record.setRecordContent(contentView.getText());
         return record;

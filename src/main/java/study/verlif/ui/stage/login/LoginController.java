@@ -5,6 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import study.verlif.action.LoginAction;
 import study.verlif.action.RegisterAction;
+import study.verlif.action.SyncAction;
 import study.verlif.manager.StageManager;
 import study.verlif.manager.UserManager;
 import study.verlif.manager.inner.Message;
@@ -56,6 +57,8 @@ public class LoginController extends BaseController {
                             protected void confirm() {
                                 // 登陆成功后关闭登陆窗口
                                 getStage().close();
+                                // 登陆后自动同步一次
+                                new SyncAction().start();
                             }
                         };
                     } else {
