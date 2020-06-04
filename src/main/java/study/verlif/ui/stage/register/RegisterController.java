@@ -28,7 +28,7 @@ public class RegisterController extends BaseController {
     public Button buttonRegister;
 
     private UserManager userManager;
-    private StageManager stageManager;
+    private final StageManager stageManager;
 
     public RegisterController() {
         userManager = UserManager.newInstance();

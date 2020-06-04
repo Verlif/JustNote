@@ -1,4 +1,4 @@
-package study.verlif.ui.stage.main;
+package study.verlif;
 
 import study.verlif.manager.StageManager;
 import study.verlif.ui.stage.base.BaseApplication;

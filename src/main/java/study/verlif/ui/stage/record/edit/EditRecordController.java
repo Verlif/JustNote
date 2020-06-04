@@ -40,7 +40,7 @@ public class EditRecordController extends BaseController {
         Note note = noteManger.buildANewNote();
         noteList.getItems().add(note);
         // 加载其他笔记本
-        noteList.getItems().addAll(localNotesManager.getNoteList());
+        noteList.getItems().addAll(noteManger.getSelfNoteList());
         // 当前记录保存的笔记本指向选择的笔记本
         noteList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             this.selectedNote = newValue;
